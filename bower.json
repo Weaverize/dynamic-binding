@@ -1,0 +1,23 @@
+{
+  "name": "dynamic-bind",
+  "main": "index.html",
+  "authors": [
+    "Rémi AUGUSTE <remi.auguste@gmail.com>"
+  ],
+  "description": "",
+  "moduleType": [],
+  "license": "UNLICENCED",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "~2.6.0",
+    "webcomponentsjs": "~1.1.1"
+  }
+}
