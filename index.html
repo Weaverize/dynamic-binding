@@ -3,21 +3,9 @@
 		<meta charset="UTF-8">
 		<title>Dynamic Binding Test</title>
 		<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-		<script src="bind.js"></script>
-		<link rel="import" href="element.html">
+		<link rel="import" href="my-app.html">
 	</head>
 	<body>
-		<h1>Testing !</h1>
-		<my-element id="pelement"></my-element>
-		<script>
-			var pelement = document.getElementById("pelement");
-			var element = document.createElement("my-element");
-			//!\ le appendChild doit être avant le bind /!\
-			document.body.appendChild(element);
-			element = bind(element, "msg", pelement, "msg");
-			pelement = bind(pelement, "msg", element, "msg");
-			window.element = element;
-			window.pelement = pelement;
-		</script>
+		<my-app ></my-app>
 	</body>
 </html>

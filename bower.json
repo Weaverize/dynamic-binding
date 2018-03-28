@@ -19,5 +19,8 @@
   "dependencies": {
     "polymer": "~2.6.0",
     "webcomponentsjs": "~1.1.1"
+  },
+  "devDependencies": {
+	"paper-input": "PolymerElements/paper-input#^2.2.0"
   }
 }
