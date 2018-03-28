@@ -1,0 +1,37 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<dom-module id="my-element2">
+	<template>
+		<paper-input value="{{msg}}"></paper-input>
+		<div>{{msg}}</div>
+		<paper-input value="{{prop.test}}"></paper-input>
+		<div>{{prop.test}}</div>
+	</template>
+	<script>
+		
+		class MyElement2 extends Polymer.Element {
+			static get is() {
+				return 'my-element2';
+			}
+			static get properties() {
+				return {
+					msg : {
+						type: String,
+						value : "valeur initiale",
+						notify : true
+					},
+					prop : {
+						type : Object,
+						value : {
+							test : "prop valeur initiale"
+						},
+						notify : true
+					}
+				}
+			}
+		}
+		
+		customElements.define(MyElement2.is, MyElement2);
+	</script>
+</dom-module>

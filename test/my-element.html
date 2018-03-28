@@ -1,0 +1,85 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+
+<link rel="import" href="my-element2.html">
+<dom-module id="my-element">
+		<template>
+	<style>
+		#testDynamic {
+			width: 100px;
+			height: 50px;
+			background: #856ce2;
+			border-radius : 10px;
+			text-align : center;
+			color : white;
+			display : flex;
+			flex-direction : columns;
+			align-items: center;
+		}
+		#testDynamic p{
+			width : 100%;
+		}
+		#content{
+			height : 1000px;
+			width : 200px;
+		}
+		 #good{
+			 width : 50%;
+			 height : 250px;
+		 }
+		 #good{
+			 width : 45%;
+			 height : 250px;
+			 float : left;
+		 }
+		 #testing{
+			 width : 45%;
+			 float : left;
+			 height : 250px;
+		 }
+	</style>
+	<div id="good">
+		<p>Résultat attendu : </p>
+		<my-element2 msg="{{msg}}" prop="{{prop}}"></my-element2>
+	</div>
+
+	<div id="testing">
+		<p>Résultat testé : </p>
+		<div id="testDynamic" on-tap="testDynamic"><p>tester</p></div>
+		<div id="content"></div>
+	</div>
+	</template>
+	<script>
+
+		class MyElement extends Polymer.GestureEventListeners(Polymer.Element) {
+			static get is() {
+				return 'my-element';
+			}
+			static get properties() {
+				return {
+					msg: {
+						type: String,
+						value : "valeur initiale",
+						notify: true
+					},
+					prop : {
+						type : Object,
+						value : {
+							test : "prop valeur initiale"
+						},
+						notify : true
+					}
+				}
+			}
+			testDynamic() {
+				var element = document.createElement("my-element2");
+				for (var i = 0; i < this.$.content.children.length; i++) {
+					this.$.content.children[i].remove();
+				}
+				this.$.content.appendChild(element);
+			}
+		}
+
+		customElements.define(MyElement.is, MyElement);
+	</script>
+</dom-module>

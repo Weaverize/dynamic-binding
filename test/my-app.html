@@ -1,0 +1,55 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="my-element.html">
+
+
+<dom-module id="my-app">
+	<template>
+		<style>
+			#main {
+				border: 1px solid black;
+				padding: 30px;
+				background : #cee09a;
+			}
+			#inside{
+				margin-top : 50px;
+				border: 1px solid black;
+				padding: 30px;
+				height : 500px;
+				background : #bebbec;
+			}
+		</style>
+		<div id="main">
+			<p>Classe principale : </p>
+			<paper-input value="{{msg}}"></paper-input>
+			<paper-input value="{{prop.test}}"></paper-input>
+		</div>
+		<div id="inside">
+			<my-element msg="{{msg}}" prop="{{prop}}"></my-element>
+		</div>
+	</template>
+	<script>
+
+		class MyApp extends Polymer.Element {
+			static get is() {
+				return 'my-app';
+			}
+			static get properties() {
+				return {
+					msg: {
+						type: String,
+						value: "Coucou !"
+					},
+					prop : {
+						type : Object,
+						value : {
+							test : "propValue"
+						}
+					}
+				}
+			}
+		}
+
+		customElements.define(MyApp.is, MyApp);
+	</script>
+</dom-module>
