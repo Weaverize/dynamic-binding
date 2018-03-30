@@ -6,19 +6,6 @@
 		<div>{{msg}}</div>
 	</template>
 	<script>
-
-		var simple = {
-			set(obj, prop, value, caller) {
-				console.log("> setting", prop, obj[prop], value);
-				return Reflect.set(obj, prop, value, caller);
-			},
-			get(obj, prop, caller) {
-				console.log("> getting", prop, obj);
-				return Reflect.get(obj, prop, caller);
-			}
-		}
-		window.simple = simple;
-
 		class MyElement extends Bindable(Polymer.Element) {
 			static get is() {
 				return 'my-element';
@@ -41,7 +28,6 @@
 				}
 			}
 		}
-
 		customElements.define(MyElement.is, MyElement);
 	</script>
 </dom-module>
