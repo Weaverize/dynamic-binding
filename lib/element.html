@@ -1,4 +1,5 @@
 <link rel="import" href="bower_components/polymer/polymer-element.html">
+<script src="Bindable.js"></script>
 
 <dom-module id="my-element">
 	<template>
@@ -18,7 +19,7 @@
 		}
 		window.simple = simple;
 
-		class MyElement extends Polymer.Element {
+		class MyElement extends Bindable(Polymer.Element) {
 			static get is() {
 				return 'my-element';
 			}
@@ -26,7 +27,7 @@
 				return {
 					msg: {
 						type: String,
-						value: "Coucou !"
+						value: "it doesn't work !"
 					},
 					test: {
 						value: 3
