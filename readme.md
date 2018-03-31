@@ -17,7 +17,7 @@ class MyOtherElement extends Bindable(Polymer.Element) {
 ```
 You can bind properties at run time using like in the following examples:
 ```js
-element._bind("prop", otherElement);
+element._bind("my_prop", otherElement);
 element._bind("prop", otherElement, "otherProp");
 element._bind("works.also.on.subprop", otherElement, "on.both.sides");
 ```
@@ -32,18 +32,18 @@ To expose a property and allow binding it should have the flag `notify : true` i
 This method creates a two-way binding between two properties of two objects.
 - `path` is the dotted path to the property in first object
 - `obj` is the destination object
-- `destPath` is the dotted path to the destination property, this is optional, `path` would be used if not provided
+- `destPath` is the optional dotted path to the destination property. `path` would be used if not provided
 
 `_bind` returns a `function()` that undoes the binding.
 
 The value from the first object will be copied in the second object.
 
-### `#._bindOneWay(path, obj, [destPath]))`
+### `#._bindOneWay(path, obj, [destPath], [setter])`
 This method creates a one-way binding between two properties of two objects.
 - `path` is the dotted path to the property in first object
 - `obj` is the destination object
-- `destPath` is the dotted path to the destination property, this is optional, `path` would be used if not provided
-- `setter` is an optional fonction to provide a custom way to set the value in the destination object (`obj`).
+- `destPath` is the optional dotted path to the destination property. `path` would be used if not provided
+- `setter` is an optional fonction to provide a custom way to set the value in the destination object (`obj`). It should have the following signature `function(value)`.
 
 `_bindOneWay` returns a `function()` that undoes the binding.
 
