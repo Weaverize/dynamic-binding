@@ -1,19 +1,23 @@
 {
-  "name": "dynamic-data-binding",
-  "main": "index.html",
-  "authors": [
-    "Weaverize <dev@weaverize.com>"
-  ],
-  "license": "UNLICENCED",
-  "homepage": "http://www.weaverize.com",
-  "private": true,
-  "description": "",
-  "moduleType": [],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ]
+	"name": "dynamic-data-binding",
+	"main": "index.html",
+	"authors": [
+		"Weaverize <dev@weaverize.com>"
+	],
+	"license": "UNLICENCED",
+	"homepage": "http://www.weaverize.com",
+	"private": true,
+	"description": "",
+	"moduleType": [],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Weaverize/dynamic-binding.git"
+	},
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	]
 }
