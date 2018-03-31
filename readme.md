@@ -102,3 +102,6 @@ prop : {
 	}
 }
 ```
+
+# Credit
+Copyright (c) 2018, [Weaverize SAS](http://www.weaverize.com). All rights reserved. Contact: <dev@weaverize.com>.

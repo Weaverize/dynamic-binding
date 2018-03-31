@@ -1,3 +1,5 @@
+// Copyright (c) 2018 Weaverize SAS <dev@weaverize.com>.
+
 /**
  * Class Mixin that extends a Polymer Class to add dynamic binding capabilities
  * Adds a _bind method
