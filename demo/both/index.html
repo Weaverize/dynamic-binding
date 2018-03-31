@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<title>Dynamic data-binding</title>
+		<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+		<link rel="import" href="../polymer/my-element2.html">
+		<script src="/Bindable.js"></script>
+		<script src="../htmlelement/element.js"></script>
+		<script src="../htmlelement/myinput.js"></script>
+	</head>
+	<body>
+		<my-element id="element1"></my-element>
+		<my-element2 id="element2"></my-element2>
+		<script>
+			var element3 = document.createElement("my-element");
+			var element4 = document.createElement("my-element2");
+			
+			document.body.appendChild(element3);
+			document.body.appendChild(element4);
+
+			element1._bind("name.firstname", element2, "msg");
+			element1._bind("name.lastname", element2, "prop.test");
+			
+			element2._bind("msg", element3, "name.firstname");
+			element2._bind("prop.test", element3, "name.lastname");
+			
+			element2._bind("msg", element4);
+			element2._bind("prop.test", element4);
+		</script>
+	</body>
+</html>

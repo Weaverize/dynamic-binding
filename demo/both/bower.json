@@ -1,0 +1,23 @@
+{
+  "name": "dynamic-binding-both",
+  "authors": [
+    "Weaverize <dev@weaverize.com>"
+  ],
+  "license": "UNLICENCED",
+  "homepage": "http://www.weaverize.com",
+  "private": true,
+  "description": "Dynamic binding demo with Custom Elements and Polymer",
+  "main": "index.html",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "polymer": "~2.6.0",
+    "paper-input": "PolymerElements/paper-input#~2.2.1"
+  }
+}

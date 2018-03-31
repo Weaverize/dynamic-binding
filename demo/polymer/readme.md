@@ -17,7 +17,7 @@ Before you can run the demo you have to install the dependencies:
 ```
 bower install
 ```
-Then serve the entire repository (because `../../Bindable.js` is used) using for example `http-server`.
+Then serve the entire repository (because `/Bindable.js` is used) using for example `http-server`.
 
 ## Bindings
 `<my-app>` and `<my-element>` are declared statically in the DOM, they are bound together using Polymer bindings (`{{msg}}` and `{{prop.test}}`).
