@@ -61,7 +61,7 @@ Changes on both sides won't be propagated to the other.
 
 If you make you use `_bindOneWay` twice to manually create the two-ways bind you can unbind one or both as you like.
 
-## Using Custom Elements
+## Using Custom Elements (untested)
 This library should be able to bind vanilla custom elements (HTMLElement). You should call Binder in your element's constructor:
 
 ```js
@@ -91,7 +91,7 @@ element._bind("prop",otherElement);
 element._bind("prop.subprop",otherElement);
 ```
 
-### Avoid cyclic object
+### Avoid cyclic object !
 The current implementation does a recursive crawl through all properties to make them bindable. You have to avoid circular reference (direct or indirect) or an infinite loop will occur.
 
 Avoid this:
