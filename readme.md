@@ -66,7 +66,7 @@ element._bind("works.also.on.subprop", otherElement, "on.both.sides");
 ```
 
 ## Custom Elements and Polymer Elements together
-You don't have much to do, just bind the property of one with the other.
+You anything else to do, just bind the property of one with the other.
 
 # Documentation
 Here is a detailed documentation of the library.
