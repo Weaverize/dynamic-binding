@@ -3,11 +3,11 @@ class MyElement extends HTMLElement {
 		super();
 		this.data = {
 			name : {
-				firstname : "John",
-				lastname : "Doe"
+				firstname : "John"
 			}
 		};
 		new Binder(this,"data");
+		this.data.name.lastname = "Doe";
 	}
 	static get is() {
 		return "my-element"

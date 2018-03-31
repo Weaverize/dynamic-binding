@@ -1,9 +1,51 @@
-# Polymer Dynamic Binding
-This mixin allows binding with dynamicaly created Polymer element.
+# Dynamic Data-Binding
+This mixin allows data-binding with dynamicaly created Native Custom Element, Polymer Element or both together.
 
-## Getting started
-To get started import `Bindable.js`.
-Then simply apply the mixin to your the element that have to be bound using class extention.
+# Getting started
+To get started
+```
+bower install --save Weaverize/dynamic-binding
+```
+then import `Bindable.js` in your html file:
+```html
+<script src="bower_components/dynamic-data-binding/Bindable.js"></script>
+```
+
+## Using native Custom Elements
+For custom elements just call a `new Binder` on your Custom Element.
+```js
+class MyElement extends HTMLElement {
+	constructor() {
+		super();
+		this.data = {
+			name : {
+				firstname : "John"
+			}
+		};
+		new Binder(this,"data");
+
+		//new property can be declared whenever
+		this.data.name.lastname = "Doe";
+	}
+}
+```
+Then in your html you can bind your objects together.
+```html
+<body>
+	<my-element id="element"></my-element>
+	<script>
+		var element1 = document.getElementById("element");
+		var element2 = document.createElement("my-element");
+		document.body.appendChild(element2);
+		element1._bind("name.firstname", element2);
+		element1._bind("name.lastname", element2);
+	</script>
+</body>
+```
+Check out the example provided in [demo/htmlelement](demo/htmlelement) that binds with a native html `<input>`.
+
+## Using Polymer Elements
+For Polymer Elements, simply apply the mixin to your the element that have to be bound using class extention.
 
 For example:
 ```js
@@ -15,6 +57,7 @@ class MyOtherElement extends Bindable(Polymer.Element) {
 	//..
 }
 ```
+
 You can bind properties at run time using like in the following examples:
 ```js
 element._bind("my_prop", otherElement);
@@ -22,11 +65,40 @@ element._bind("prop", otherElement, "otherProp");
 element._bind("works.also.on.subprop", otherElement, "on.both.sides");
 ```
 
-## Bind the property
-To bind the property your can use the following methods.
+## Custom Elements and Polymer Elements together
+You don't have much to do, just bind the property of one with the other.
 
-### Expose Property
-To expose a property and allow binding it should have the flag `notify : true` in the property's definition.
+# Documentation
+Here is a detailed documentation of the library.
+
+## Datastore
+The datastore is where the bindable properties are.
+Every property found in the datastore are automatically bindable.
+They don't have to be defined in advance.
+
+For Custom Elements the datastore can have any name. For Polymer we use the Polymer's datastore `__data` (with two `_`). To expose a Polymer property it should have the flag `notify : true` in its definition.
+
+## Overloading your Element
+To make an element's properties bindable your have to overload it with this library.
+
+### `new Binder(element, datastore)`
+Native elements are overloaded by the contructor of the Binder class.
+- `element` is the element to overload, usually `this`.
+- `datastore` is the name of the datastore corresponding to `this[datastore]`. It should be an object, it will be created if the property is not defined or if it's not an object.
+
+The constructor adds the following methods if needed:
+- `#.get(path)`
+	- `path` is the dotted string path to the property inside the datastore (without the name of the datastore). 
+- `#.set(path, value)`
+	- `path` is the dotted string path, just like for `get`.
+	- `value` is the value to set, it can be of any type.
+
+### `extends Bindable(Polymer.Element)`
+Polymer Elements don't have to specify a datastore, `__data` will be used automatically.
+
+Polymer Elements already have `get` and `set` defined natively.
+
+## Binding
 
 ### `#._bind(path, obj, [destPath])`
 This method creates a two-way binding between two properties of two objects.
@@ -49,7 +121,13 @@ This method creates a one-way binding between two properties of two objects.
 
 The value from the first object will be copied in the second object.
 
-## Unbind
+`_bindOneWay` is useful when your binding to a native html element like a `<div>` or an `<input>` that you want to sync:
+```js
+this._bindOneWay("name.firstname", div, "innerText");
+this._bindOneWay("name.firstname", input, "value");
+```
+
+## Unbinding
 When you create a bind a function is returned to undo it.
 
 Example:
@@ -57,33 +135,14 @@ Example:
 var unbind = element._bind("prop", otherElement);
 unbind();
 ```
-Changes on both sides won't be propagated to the other.
+Changes on both sides will not be propagated to the other after this.
 
-If you make you use `_bindOneWay` twice to manually create the two-ways bind you can unbind one or both as you like.
+If you make you use `_bindOneWay` twice to manually create the two-ways bind that you can unbind one or both as you like.
 
-## Using Custom Elements (untested)
-This library should be able to bind vanilla custom elements (HTMLElement). You should call Binder in your element's constructor:
+# Important Notes
 
-```js
-class MyElement extends HTMLElement {
-	constructor() {
-		super();
-		this._data = {};
-		new Binder(this, "_data");
-	}
-}
-```
-Now your element properties stored in `_data` should be bindable using only `_bindOneWay` to which you have to provide your custom setter. `"_data"` should not be part of the path while binding.
-
-Properties added to your `_data` will become bindable automatically.
-
-## Important Notes
-
-### Polymer properties
-Polymer's properties are stored in `__data` (with two `_`). Root property you add there will also be bindable by this library. They might not be bindable with Polymer's binding mecanism though (untested).
-
-### Binding sub-properties
-If your using Polymer binding and this binding to bind sub-properties you should manually bind every step of the path leading to your property.
+## Binding sub-properties
+If your using Polymer and this library to bind sub-properties you should manually bind every step of the path leading to your property.
 
 For example to bind `prop.subprop` your should use the following binding:
 ```js
@@ -91,7 +150,9 @@ element._bind("prop",otherElement);
 element._bind("prop.subprop",otherElement);
 ```
 
-### Avoid cyclic object !
+Polymer seems to send an entire object when one of its property is changed.
+
+## Avoid cyclic object !
 The current implementation does a recursive crawl through all properties to make them bindable. You have to avoid circular reference (direct or indirect) or an infinite loop will occur.
 
 Avoid this:

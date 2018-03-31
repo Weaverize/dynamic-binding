@@ -16,9 +16,8 @@
     "test",
     "tests"
   ],
-  "dependencies": {
+  "devDependencies": {
     "polymer": "~2.6.0",
-    "paper-input": "PolymerElements/paper-input#~2.2.1",
-    "dynamic-bind": "Weaverize/dynamic-binding"
+    "paper-input": "PolymerElements/paper-input#~2.2.1"
   }
 }
