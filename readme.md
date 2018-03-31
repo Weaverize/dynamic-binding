@@ -65,8 +65,12 @@ element._bind("prop", otherElement, "otherProp");
 element._bind("works.also.on.subprop", otherElement, "on.both.sides");
 ```
 
+A complete example is available in the [demo/polymer](demo/polymer) it mixes normal Polymer with bindings from this library.
+
 ## Custom Elements and Polymer Elements together
 You anything else to do, just bind the property of one with the other.
+
+Check out [demo/both](demo/both) for simple demo using elements from the two other demo.
 
 # Documentation
 Here is a detailed documentation of the library.
