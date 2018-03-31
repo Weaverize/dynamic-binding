@@ -2,7 +2,6 @@
 <link rel="import" href="bower_components/paper-input/paper-input.html">
 <link rel="import" href="my-element.html">
 
-
 <dom-module id="my-app">
 	<template>
 		<style>
@@ -20,7 +19,7 @@
 			}
 		</style>
 		<div id="main">
-			<p>Classe principale : </p>
+			<p>Static Element 1 : </p>
 			<paper-input value="{{msg}}"></paper-input>
 			<paper-input value="{{prop.test}}"></paper-input>
 		</div>
@@ -38,15 +37,20 @@
 				return {
 					msg: {
 						type: String,
-						value: "Coucou !"
+						value: "It doesn't work on properties :'("
 					},
 					prop : {
 						type : Object,
 						value : {
-							test : "propValue"
+							test : "It doesn't work on sub-properties :'("
 						}
 					}
 				}
+			}
+			ready() {
+				super.ready();
+				this.set("msg", "It works for property !");
+				this.set("prop.test", "It works for sub-property !");
 			}
 		}
 

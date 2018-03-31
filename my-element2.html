@@ -1,5 +1,7 @@
 <link rel="import" href="bower_components/polymer/polymer-element.html">
 <link rel="import" href="bower_components/paper-input/paper-input.html">
+<script src="Bindable.js"></script>
+
 <dom-module id="my-element2">
 	<template>
 		<paper-input value="{{msg}}"></paper-input>
@@ -9,7 +11,7 @@
 	</template>
 	<script>
 		
-		class MyElement2 extends Polymer.Element {
+		class MyElement2 extends Bindable(Polymer.Element) {
 			static get is() {
 				return 'my-element2';
 			}
@@ -17,13 +19,13 @@
 				return {
 					msg : {
 						type: String,
-						value : "valeur initiale",
+						value : "Dynamic object property",
 						notify : true
 					},
 					prop : {
 						type : Object,
 						value : {
-							test : "prop valeur initiale"
+							test : "Dynamic object sub-property"
 						},
 						notify : true
 					}

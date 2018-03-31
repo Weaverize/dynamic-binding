@@ -12,13 +12,27 @@ var Bindable = function (superClass) {
 		}
 
 		/**
+		 * Sync the properties of two objects together both ways
+		 * Shared value will the one of the object bound to
+		 * @param {String} path dotted path of the property within this object
+		 * @param {*} destObj object to sync
+		 * @param {String} [destPath] dotted path to the destination property, path will be copied if not provided
+		 * @returns {function} function to undo the binding
+		 */
+		_bind(path, destObj, destPath) {
+			//mock method replaced by Binder.bindPropertyBothWays at runtime
+			//used for documentation purposes
+		}
+
+		/**
 		 * Binds a property of this object with a target's object property
 		 * @param {String} path dotted path of the property within this object
-		 * @param {*} target object to sync
-		 * @param {String} property name of the property within the target
-		 * @returns function to remove the created binding
+		 * @param {*} destObj object to sync
+		 * @param {String} [destPath] dotted path to the destination property, path will be copied if not provided
+		 * @param {function} [setter] custom function to set a new value on the destination object
+		 * @returns {function} function to undo the binding
 		 */
-		_bind(path, target, property) {
+		_bindOneWay(path, destObj, destPath, setter) {
 			//mock method replaced by Binder.bindProperty at runtime
 			//used for documentation purposes
 		}
@@ -36,17 +50,17 @@ var Binder = class {
 		this.binds = new Map;
 		this.element = element;
 		this.entrypoint = entrypoint;
-		
+
 		this.handler = {
 			set(obj, prop, value, parent) {
 				if (obj[prop] != value) {
 					//console.log("setting", prop, obj[prop], value);
-					var returnValue = Reflect.set(obj, prop, value);
+					Reflect.set(obj, prop, value);
 					if (value && typeof value == "object") {
 						obj[prop] = this.deepBind(obj[prop]);
 					}
 					this.notifyChanges(obj, prop, value, parent);
-					return returnValue;
+					return true;
 				}
 				else {
 					//the value is unchanged, lets avoid propagation of unchanged
@@ -62,10 +76,18 @@ var Binder = class {
 		}
 		this.handler.set = this.handler.set.bind(this);
 		this.handler.deleteProperty = this.handler.deleteProperty.bind(this);
+
+		this.bindProperty = this.bindProperty.bind(this);
+		this.bindPropertyBothWays = this.bindPropertyBothWays.bind(this)
+
 		element[entrypoint] = this.deepBind(element[entrypoint]);
-		this.bindProperty = this.bindProperty.bind(this)
-		element._bind = this.bindProperty;
-		element._binds = this.binds;
+
+		//to expose the binding at runtime uncomment:
+		//element._binds = this.binds;
+		
+		//making the default binding two-way by default seemed the default behavior
+		element._bind = this.bindPropertyBothWays;
+		element._bindOneWay = this.bindProperty;
 	}
 
 	/**
@@ -90,8 +112,10 @@ var Binder = class {
 	resolve(obj, path) {
 		var steps = path.split(".");
 		var crawled = obj;
-		for (var step of steps) {
-			crawled = crawled[step];
+		if (path != "") {
+			for (var step of steps) {
+				crawled = crawled[step];
+			}
 		}
 		return crawled;
 	}
@@ -116,33 +140,62 @@ var Binder = class {
 	 */
 	makeSetter(obj, prop) {
 		return function (value) {
-			if (obj[prop] != value)
-				obj[prop] = value;
+			if (obj.get(prop) != value) {
+				obj.set(prop, value);
+			}
+			obj.notifyPath(prop);
 		}
 	}
-	
+
+	/**
+	 * Sync the properties of two objects together both ways
+	 * Shared value will the one of the object bound to
+	 * @param {String} path dotted path of the property within this object
+	 * @param {*} destObj object to sync
+	 * @param {String} [destPath] dotted path to the destination property, path will be copied if not provided
+	 * @returns {function} function to undo the binding
+	 */
+	bindPropertyBothWays(path, destObj, destPath) {
+		var destPath = destPath || path;
+		var undos = [];
+		undos.push(this.bindProperty(path, destObj, destPath));
+		if (typeof destObj._bind == "function") {
+			undos.push(destObj._bindOneWay(destPath, this.element, path));
+		}
+		else
+		{
+			console.log(destObj, "is not Bindable, binding will be one way only.\nUse ._bindOneWay() or make it Bindable to avoid this message.");
+		}
+		return function () {
+			undos.forEach(function (undo) {
+				undo();
+			});
+		}
+	}
+
 	/**
 	 * Binds a property of this object with a target's object property
 	 * @param {String} path dotted path of the property within this object
-	 * @param {*} target object to sync
-	 * @param {String} property name of the property within the target
-	 * @returns function to remove the created binding
+	 * @param {*} destObj object to sync
+	 * @param {String} [destPath] dotted path to the destination property, path will be copied if not provided
+	 * @param {function} [setter] custom function to set a new value on the destination object
+	 * @returns {function} function to undo the binding
 	 */
-	bindProperty(path, destObj, destProp) {
-		var parent = resolveParent(this.element[this.entrypoint], path);
+	bindProperty(path, destObj, destPath, setter) {
+		var destPath = destPath || path;
+		var parent = this.resolveParent(this.element[this.entrypoint], path);
 		var property = path.split(".").pop();
 		if (parent && this.binds.has(parent)) {
 			var setting = {
 				property: property,
-				setter: makeSetter(destObj, destProp)
+				setter: setter || this.makeSetter(destObj, destPath)
 			};
 			setting.setter(parent[property]);
 			var binds = this.binds.get(parent);
 			binds.push(setting);
 			//unbinding:
 			return function () {
-				if (binds.indexOf(setting) != -1)
-				{
+				if (binds.indexOf(setting) != -1) {
 					binds.splice(binds.indexOf(setting), 1);
 				}
 			};
@@ -151,7 +204,7 @@ var Binder = class {
 			console.log("this property doesn't exist or cannot be binded (is it notify: true ?)", parent, property);
 		}
 	}
-	
+
 	/**
 	 * Notifies if necessary of the change to a bindable property's value
 	 * @param {*} obj proxy's target object
