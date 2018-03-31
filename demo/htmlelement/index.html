@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>Dynamic data-binding</title>
+		<script src="/Bindable.js"></script>
+		<script src="element.js"></script>
+		<script src="myinput.js"></script>
+	</head>
+	<body>
+		<my-element id="element"></my-element>
+		<script>
+			var element1 = document.getElementById("element");
+			var element2 = document.createElement("my-element");
+			document.body.appendChild(element2);
+			element1._bind("name.firstname", element2);
+			element1._bind("name.lastname", element2);
+		</script>
+	</body>
+</html>

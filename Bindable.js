@@ -53,6 +53,11 @@ var Binder = class {
 		this.element = element;
 		this.entrypoint = entrypoint;
 
+		if (!this.element[this.entrypoint] || typeof this.element[this.entrypoint] != "object")
+		{
+			this.element[this.entrypoint] = {};
+		}
+
 		this.handler = {
 			set(obj, prop, value, parent) {
 				if (obj[prop] != value) {
@@ -85,11 +90,13 @@ var Binder = class {
 		element[entrypoint] = this.deepBind(element[entrypoint]);
 
 		//to expose the binding at runtime uncomment:
-		//element._binds = this.binds;
+		element._binds = this.binds;
 		
 		//making the default binding two-way by default seemed the default behavior
 		element._bind = this.bindPropertyBothWays;
 		element._bindOneWay = this.bindProperty;
+
+		this.addGetterAndSetter();
 	}
 
 	/**
@@ -142,10 +149,25 @@ var Binder = class {
 	 */
 	makeSetter(obj, prop) {
 		return function (value) {
-			if (obj.get(prop) != value) {
-				obj.set(prop, value);
+			if (obj.get != undefined)
+			{
+				if (obj.get(prop) != value) {
+					obj.set(prop, value);
+				}
+				if (obj.notifyPath != undefined)
+				{
+					obj.notifyPath(prop);
+				}
 			}
-			obj.notifyPath(prop);
+			else
+			{
+				var parent = this.resolveParent(obj, prop);
+				var property = prop.split(".").pop();
+				if (parent[property] != value)
+				{
+					parent[property] = value;
+				}
+			}
 		}
 	}
 
@@ -192,6 +214,7 @@ var Binder = class {
 				property: property,
 				setter: setter || this.makeSetter(destObj, destPath)
 			};
+			setting.setter = setting.setter.bind(this);
 			setting.setter(parent[property]);
 			var binds = this.binds.get(parent);
 			binds.push(setting);
@@ -245,6 +268,24 @@ var Binder = class {
 			var proxy = new Proxy(property, this.handler);
 			this.register(proxy);
 			return proxy;
+		}
+	}
+
+	addGetterAndSetter() {
+		if (this.element.get == undefined)
+		{
+			this.element.get = function(path) {
+				return this.resolve(this.element[this.entrypoint], path);
+			}.bind(this);
+		}
+
+		if (this.element.set == undefined)
+		{
+			this.element.set = function(path, value) {
+				var parent = this.resolveParent(this.element[this.entrypoint], path);
+				var property = path.split(".").pop();
+				parent[property] = value;
+			}.bind(this);
 		}
 	}
 }

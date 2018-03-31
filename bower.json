@@ -2,25 +2,18 @@
   "name": "dynamic-bind",
   "main": "index.html",
   "authors": [
-    "Rémi AUGUSTE <remi.auguste@gmail.com>"
+    "Weaverize <dev@weaverize.com>"
   ],
+  "license": "UNLICENCED",
+  "homepage": "http://www.weaverize.com",
+  "private": true,
   "description": "",
   "moduleType": [],
-  "license": "UNLICENCED",
-  "homepage": "",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
     "tests"
-  ],
-  "dependencies": {
-    "polymer": "~2.6.0",
-    "webcomponentsjs": "~1.1.1"
-  },
-  "devDependencies": {
-	"paper-input": "PolymerElements/paper-input#^2.2.0"
-  }
+  ]
 }
