@@ -1,3 +1,6 @@
+/**
+ * Simple elements that holds the bindable properties "name.firstname" and "name.lastname"
+ */
 class MyElement extends HTMLElement {
 	constructor() {
 		super();
@@ -7,6 +10,8 @@ class MyElement extends HTMLElement {
 			}
 		};
 		new Binder(this,"data");
+
+		//bindable properties can be declared whenever
 		this.data.name.lastname = "Doe";
 	}
 	static get is() {
