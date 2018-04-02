@@ -1,5 +1,6 @@
 /**
  * This class wraps an HTML <input> and makes it two-ways bindable on its "value" property
+ * Check bindableinput for the equivalent directly overloading the `<input>`
  */
 class BindableInput extends HTMLElement {
 	static get is() {

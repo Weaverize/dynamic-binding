@@ -32,7 +32,7 @@ class MyElement extends HTMLElement {
 		div.appendChild(lastname);
 		shadow.appendChild(div);
 		
-		var inputfirst = document.createElement('my-input');
+		var inputfirst = createBindableInput();
 		var inputlast = document.createElement('my-input');
 
 		shadow.appendChild(inputfirst);
