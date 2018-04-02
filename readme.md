@@ -68,7 +68,7 @@ element._bind("works.also.on.subprop", otherElement, "on.both.sides");
 A complete example is available in the [demo/polymer](demo/polymer) it mixes normal Polymer with bindings from this library.
 
 ## Custom Elements and Polymer Elements together
-You anything else to do, just bind the property of one with the other.
+You don't have anything specific to do, just bind the Bindable properties of one with the other.
 
 Check out [demo/both](demo/both) for simple demo using elements from the two other demo.
 
@@ -83,7 +83,7 @@ They don't have to be defined in advance.
 For Custom Elements the datastore can have any name. For Polymer we use the Polymer's datastore `__data` (with two `_`). To expose a Polymer property it should have the flag `notify : true` in its definition.
 
 ## Overloading your Element
-To make an element's properties bindable your have to overload it with this library.
+To make an element's properties bindable your have to overload it with this library. This can be done at run time by calling `new Binder` on the object you want to bind with. It can also be done in a class declaration either by calling `new Binder` in the constructor or using the class mixin (meant mainly for Polymer Elements) which is the second method presented thereafter.
 
 ### `new Binder(element, datastore)`
 Native elements are overloaded by the contructor of the Binder class.
@@ -96,9 +96,10 @@ The constructor adds the following methods if needed:
 - `#.set(path, value)`
 	- `path` is the dotted string path, just like for `get`.
 	- `value` is the value to set, it can be of any type.
+You can use those utility fonction only if you want, they're not mandatory to `get` or `set` the binded properties.
 
 ### `extends Bindable(Polymer.Element)`
-Polymer Elements don't have to specify a datastore, `__data` will be used automatically.
+Polymer Elements don't have to specify a datastore, `__data` will be used automatically using this class mixin.
 
 Polymer Elements already have `get` and `set` defined natively.
 
