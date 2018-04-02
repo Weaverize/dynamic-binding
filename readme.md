@@ -1,5 +1,6 @@
 # Dynamic Data-Binding
-This mixin allows data-binding with dynamicaly created Native Custom Element, Polymer Element or both together.
+This mixin allows data-binding with statically or dynamicaly created Custom Elements, native HTML Elements, Polymer Elements or all together.
+Maybe this library should be called "The One Ring"...
 
 # Getting started
 To get started
@@ -168,6 +169,5 @@ prop : {
 	}
 }
 ```
-
 # Credit
 Copyright (c) 2018, [Weaverize SAS](http://www.weaverize.com). All rights reserved. Contact: <dev@weaverize.com>.
